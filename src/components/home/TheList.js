@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { useState } from "react"
 import styled from "styled-components"
 import { v4 } from "uuid"
@@ -7,7 +7,7 @@ const TheList = ({ subjectDataList, setSubjectDataList }) => {
 
 	const [subject, setSubject] = useState(subjectDataList.find(x => x.active))
 
-	const [chapters, ss] = useState([
+	const goodData = useMemo(() => [
 		{
 			id: v4(),
 			name: "ART & CULTURE",
@@ -29,7 +29,7 @@ const TheList = ({ subjectDataList, setSubjectDataList }) => {
 			name: "ART & CULTURE",
 			chapter: "Chapter 1",
 			loaded: true,
-			percent: 75,
+			percent: 85,
 			showLine: true
 		},
 		{
@@ -40,7 +40,44 @@ const TheList = ({ subjectDataList, setSubjectDataList }) => {
 			percent: 0,
 			showLine: true
 		}
-	])
+	], [])
+
+	const badData = useMemo(() => [
+		{
+			id: v4(),
+			name: "ART & CULTURE",
+			chapter: "Chapter 1",
+			loaded: false,
+			percent: 0,
+			showLine: false
+		},
+		{
+			id: v4(),
+			name: "ART & CULTURE",
+			chapter: "Chapter 1",
+			loaded: false,
+			percent: 0,
+			showLine: true
+		},
+		{
+			id: v4(),
+			name: "ART & CULTURE",
+			chapter: "Chapter 1",
+			loaded: true,
+			percent: 0,
+			showLine: true
+		},
+		{
+			id: v4(),
+			name: "ART & CULTURE",
+			chapter: "Chapter 1",
+			loaded: true,
+			percent: 0,
+			showLine: true
+		}
+	], [])
+
+	const [chapters, ss] = useState(goodData)
 
 	useEffect(() => {
 
@@ -50,81 +87,15 @@ const TheList = ({ subjectDataList, setSubjectDataList }) => {
 
 		if (!sub.bought) {
 
-			ss([
-				{
-					id: v4(),
-					name: "ART & CULTURE",
-					chapter: "Chapter 1",
-					loaded: false,
-					percent: 0,
-					showLine: false
-				},
-				{
-					id: v4(),
-					name: "ART & CULTURE",
-					chapter: "Chapter 1",
-					loaded: false,
-					percent: 0,
-					showLine: true
-				},
-				{
-					id: v4(),
-					name: "ART & CULTURE",
-					chapter: "Chapter 1",
-					loaded: true,
-					percent: 0,
-					showLine: true
-				},
-				{
-					id: v4(),
-					name: "ART & CULTURE",
-					chapter: "Chapter 1",
-					loaded: true,
-					percent: 0,
-					showLine: true
-				}
-			])
+			ss(badData)
 
 		} else {
 
-			ss([
-				{
-					id: v4(),
-					name: "ART & CULTURE",
-					chapter: "Chapter 1",
-					loaded: false,
-					percent: 100,
-					showLine: false
-				},
-				{
-					id: v4(),
-					name: "ART & CULTURE",
-					chapter: "Chapter 1",
-					loaded: false,
-					percent: 100,
-					showLine: true
-				},
-				{
-					id: v4(),
-					name: "ART & CULTURE",
-					chapter: "Chapter 1",
-					loaded: true,
-					percent: 75,
-					showLine: true
-				},
-				{
-					id: v4(),
-					name: "ART & CULTURE",
-					chapter: "Chapter 1",
-					loaded: true,
-					percent: 0,
-					showLine: true
-				}
-			])
+			ss(goodData)
 
 		}
 
-	}, [subjectDataList])
+	}, [subjectDataList, goodData, badData])
 
 	const buySubject = id => {
 
@@ -140,6 +111,65 @@ const TheList = ({ subjectDataList, setSubjectDataList }) => {
 
 		setSubjectDataList(newData)
 
+	}
+
+	const polarToCartesian = (centerX, centerY, radius, angleInDegrees) => {
+
+		const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+
+		return {
+
+			x: centerX + (radius * Math.cos(angleInRadians)),
+
+			y: centerY + (radius * Math.sin(angleInRadians))
+
+		};
+
+	}
+
+	const createPath = percent => {
+
+		const opts = {
+
+			cx: 26,
+
+			cy: 26,
+
+			radius: 26,
+
+			start_angle: 0,
+
+			end_angle: (percent / 100) * 360,
+
+			thickness: 3
+
+		};
+
+		const start = polarToCartesian(opts.cx, opts.cy, opts.radius, opts.end_angle);
+
+		const end = polarToCartesian(opts.cx, opts.cy, opts.radius, opts.start_angle);
+
+		const largeArcFlag = opts.end_angle - opts.start_angle <= 180 ? "0" : "1";
+
+		const cutout_radius = opts.radius - opts.thickness;
+
+		const start2 = polarToCartesian(opts.cx, opts.cy, cutout_radius, opts.end_angle);
+
+		const end2 = polarToCartesian(opts.cx, opts.cy, cutout_radius, opts.start_angle);
+
+		const d = [
+			"M", start.x, start.y,
+			"A", opts.radius, opts.radius, 0, largeArcFlag, 0, end.x, end.y,
+			"L", opts.cx, opts.cy,
+			"Z",
+
+			"M", start2.x, start2.y,
+			"A", cutout_radius, cutout_radius, 0, largeArcFlag, 0, end2.x, end2.y,
+			"L", opts.cx, opts.cy,
+			"Z"
+		].join(" ");
+
+		return d
 	}
 
 	return (
@@ -178,9 +208,25 @@ const TheList = ({ subjectDataList, setSubjectDataList }) => {
 
 								{chapter.showLine && <div className={"line " + (chapter.percent === 0 ? "off " : "") + (chapter.percent === 100 ? "on " : "")}></div>}
 
-								<div className={"round " + (chapter.percent === 0 ? "off " : "") + (chapter.percent === 100 ? "on " : "")}>
+								<div className={"round " + (chapter.percent === 0 ? "off " : "") + (chapter.percent === 100 ? "on " : "") + ((chapter.percent > 0 && chapter.percent < 100) ? "pro-all " : "")}>
 
 									<div className={"in-r " + (chapter.percent === 0 ? "off " : "") + (chapter.percent === 100 ? "on " : "")}></div>
+
+									{(chapter.percent > 0 && chapter.percent < 100) && <div className="pro">
+
+										<div className="in-pro"></div>
+
+										<div className="out-pro">
+
+											<svg viewBox="0 0 52 52" width="52" height="52">
+
+												<path id="arc" fill="#53D08D" stroke="none" fillRule="evenodd" d={createPath(chapter.percent)} />
+
+											</svg>
+
+										</div>
+
+									</div>}
 
 								</div>
 
@@ -349,6 +395,7 @@ const TheListStyle = styled.div`
 					justify-content: center;
 
 					.in-r {
+						z-index: 25;
 						background-image: url('/svg/c-done.svg');
 						background-position: center;
 						background-repeat: no-repeat;
@@ -371,6 +418,44 @@ const TheListStyle = styled.div`
 
 						.in-r {
 							background-image: url('/svg/c-lock.svg');
+						}
+					}
+
+					&.pro-all {
+						border: 0 none;
+						
+						.pro {
+							z-index: 15;
+							position: absolute;
+							top: 0;
+							left: 0;
+							right: 0;
+							bottom: 0;
+							background-color: #DADADA;
+							border-radius: 50%;
+
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							
+							.out-pro {
+								position: absolute;
+								top: 0px; bottom: 0px;
+								right: 0px; left: 0px;
+								background-color: transparent;
+								border-radius: 50%;
+								z-index: 10;
+								clip-path: circle(50%);
+							}
+							
+							.in-pro {
+								z-index: 15;
+								position: absolute;
+								top: 3px; bottom: 3px;
+								right: 3px; left: 3px;
+								background-color: #fff;
+								border-radius: 50%;
+							}
 						}
 					}
 				}

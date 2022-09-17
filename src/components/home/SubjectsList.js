@@ -122,6 +122,7 @@ const SubjectsListStyle = styled.div`
 				background-image: url('/svg/lock.svg');
 				background-position: center;
 				background-repeat: no-repeat;
+				background-size: contain;
 			}
 		}
 	}
