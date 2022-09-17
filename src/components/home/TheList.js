@@ -122,15 +122,17 @@ const TheList = ({ subjectDataList, setSubjectDataList }) => {
 
 						</div>
 
-						<div className="end-part">
+						<div className={"end-part " + (chapter.percent === 0 ? "off " : "") + (chapter.loaded ? "yup " : "nope ")}>
+
+							<div className={"inn-eed " + (chapter.percent === 0 ? "off " : "") + (chapter.loaded ? "yup " : "nope ")}></div>
 
 						</div>
+
+						<div className="e-line"></div>
 
 					</div>)}
 
 				</div>
-
-				{subject.name}
 
 			</div>}
 
@@ -318,6 +320,57 @@ const TheListStyle = styled.div`
 					align-items: center;
 					margin-bottom: 29.5px;
 				}
+			}
+
+			.end-part {
+				background-color: red;
+				width: 38px;
+				height: 38px;
+				margin: auto;
+				margin-right: 0;
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				&.nope {
+					background-color: #FFF5EB;
+
+					.inn-eed {
+						width: 17px; 
+						height: 16px;
+						background-image: url('/svg/rotate-cw.svg');
+						background-size: contain;
+						background-position: center;
+						background-repeat: no-repeat;
+					}
+				}
+
+				&.yup {
+					background: linear-gradient(92deg, #FC5D73, #FF993F);
+
+					.inn-eed {
+						width: 13px; 
+						height: 13px;
+						background-image: url('/svg/arrow-right.svg');
+						background-size: contain;
+						background-position: center;
+						background-repeat: no-repeat;
+					}
+				}
+
+				&.off {
+					background: #DADADA;
+				}
+			}
+
+			.e-line {
+				position: absolute;
+				bottom: 0;
+				right: 9.25px;
+				height: 2px;
+				width: 278px;
+				background-color: #DADADA;
 			}
 		}
 	}
