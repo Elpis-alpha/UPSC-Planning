@@ -126,7 +126,6 @@ justify-content: center;
 				display: inline-block;
 				font-size: 12px;
 				line-height: 14px;
-				cursor: pointer;
 			}
 		}
 	}
@@ -146,6 +145,7 @@ justify-content: center;
 			font-weight: bold;
 			line-height: 20px;
 			border-radius: 14px;
+			cursor: pointer;
 			background-color: #FFFFFF;
 		}
 	}

@@ -84,7 +84,44 @@ const TheList = ({ subjectDataList, setSubjectDataList }) => {
 					showLine: true
 				}
 			])
-			
+
+		} else {
+
+			ss([
+				{
+					id: v4(),
+					name: "ART & CULTURE",
+					chapter: "Chapter 1",
+					loaded: false,
+					percent: 100,
+					showLine: false
+				},
+				{
+					id: v4(),
+					name: "ART & CULTURE",
+					chapter: "Chapter 1",
+					loaded: false,
+					percent: 1000,
+					showLine: true
+				},
+				{
+					id: v4(),
+					name: "ART & CULTURE",
+					chapter: "Chapter 1",
+					loaded: true,
+					percent: 75,
+					showLine: true
+				},
+				{
+					id: v4(),
+					name: "ART & CULTURE",
+					chapter: "Chapter 1",
+					loaded: true,
+					percent: 0,
+					showLine: true
+				}
+			])
+
 		}
 
 	}, [subjectDataList])

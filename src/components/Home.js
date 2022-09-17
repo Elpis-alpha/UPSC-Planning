@@ -1,11 +1,20 @@
 import styled from "styled-components"
+
 import VeryTop from "./home/VeryTop"
+
 import TopLayer from "./home/TopLayer"
+
 import SubjectsList from "./home/SubjectsList"
+
 import { v4 } from "uuid"
+
 import { useState } from "react"
+
 import TheList from "./home/TheList"
+
 import OverBegin from "./home/OverBegin"
+
+import OverNext from "./home/OverNext"
 
 
 const Home = () => {
@@ -55,6 +64,7 @@ const Home = () => {
 
 	const [showBegin, setShowBegin] = useState(true)
 
+	const [showNext, setShowNext] = useState(false)
 
 	return (
 
@@ -70,7 +80,9 @@ const Home = () => {
 
 			<TheList {...{ subjectDataList, setSubjectDataList }} />
 
-			{showBegin && <OverBegin remove={() => setShowBegin(false)} />}
+			{showBegin && <OverBegin remove={() => { setShowBegin(false); setShowNext(true) }} />}
+
+			{showNext && <OverNext remove={() => { setShowNext(false) }} subjectData={subjectDataList[0]} />}
 
 		</HomeStyle>
 
