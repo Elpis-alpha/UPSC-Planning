@@ -7,29 +7,7 @@ const TheList = ({ subjectDataList, setSubjectDataList }) => {
 
 	const [subject, setSubject] = useState(subjectDataList.find(x => x.active))
 
-	useEffect(() => {
-
-		setSubject(subjectDataList.find(x => x.active))
-
-	}, [subjectDataList])
-
-	const buySubject = id => {
-
-		const newData = subjectDataList.map(x => {
-
-			x.bought = x.id === id ? true : x.bought
-
-			x.locked = !x.bought
-
-			return x
-
-		})
-
-		setSubjectDataList(newData)
-
-	}
-
-	const chapters = [
+	const [chapters, ss] = useState([
 		{
 			id: v4(),
 			name: "ART & CULTURE",
@@ -62,7 +40,70 @@ const TheList = ({ subjectDataList, setSubjectDataList }) => {
 			percent: 0,
 			showLine: true
 		}
-	]
+	])
+
+	useEffect(() => {
+
+		const sub = subjectDataList.find(x => x.active)
+
+		setSubject(sub)
+
+		if (!sub.bought) {
+
+			ss([
+				{
+					id: v4(),
+					name: "ART & CULTURE",
+					chapter: "Chapter 1",
+					loaded: false,
+					percent: 0,
+					showLine: false
+				},
+				{
+					id: v4(),
+					name: "ART & CULTURE",
+					chapter: "Chapter 1",
+					loaded: false,
+					percent: 0,
+					showLine: true
+				},
+				{
+					id: v4(),
+					name: "ART & CULTURE",
+					chapter: "Chapter 1",
+					loaded: true,
+					percent: 0,
+					showLine: true
+				},
+				{
+					id: v4(),
+					name: "ART & CULTURE",
+					chapter: "Chapter 1",
+					loaded: true,
+					percent: 0,
+					showLine: true
+				}
+			])
+			
+		}
+
+	}, [subjectDataList])
+
+	const buySubject = id => {
+
+		const newData = subjectDataList.map(x => {
+
+			x.bought = x.id === id ? true : x.bought
+
+			x.locked = !x.bought
+
+			return x
+
+		})
+
+		setSubjectDataList(newData)
+
+	}
 
 	return (
 
