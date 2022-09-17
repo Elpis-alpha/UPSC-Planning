@@ -5,6 +5,7 @@ import SubjectsList from "./home/SubjectsList"
 import { v4 } from "uuid"
 import { useState } from "react"
 import TheList from "./home/TheList"
+import OverBegin from "./home/OverBegin"
 
 
 const Home = () => {
@@ -52,6 +53,8 @@ const Home = () => {
 		},
 	])
 
+	const [showBegin, setShowBegin] = useState(true)
+
 
 	return (
 
@@ -66,6 +69,8 @@ const Home = () => {
 			<SubjectsList {...{ subjectDataList, setSubjectDataList }} />
 
 			<TheList {...{ subjectDataList, setSubjectDataList }} />
+
+			{showBegin && <OverBegin remove={() => setShowBegin(false)} />}
 
 		</HomeStyle>
 
