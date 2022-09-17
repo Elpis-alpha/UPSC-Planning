@@ -101,7 +101,7 @@ const TheList = ({ subjectDataList, setSubjectDataList }) => {
 					name: "ART & CULTURE",
 					chapter: "Chapter 1",
 					loaded: false,
-					percent: 1000,
+					percent: 100,
 					showLine: true
 				},
 				{
@@ -178,7 +178,11 @@ const TheList = ({ subjectDataList, setSubjectDataList }) => {
 
 								{chapter.showLine && <div className={"line " + (chapter.percent === 0 ? "off " : "") + (chapter.percent === 100 ? "on " : "")}></div>}
 
-								<div className={"round " + (chapter.percent === 0 ? "off " : "") + (chapter.percent === 100 ? "on " : "")}><div className={"in-r " + (chapter.percent === 0 ? "off " : "") + (chapter.percent === 100 ? "on " : "")}></div></div>
+								<div className={"round " + (chapter.percent === 0 ? "off " : "") + (chapter.percent === 100 ? "on " : "")}>
+
+									<div className={"in-r " + (chapter.percent === 0 ? "off " : "") + (chapter.percent === 100 ? "on " : "")}></div>
+
+								</div>
 
 							</div>
 
